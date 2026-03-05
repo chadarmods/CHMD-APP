@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Mukti Kendra - Login</title>
+<!-- BEGIN: Scripts and Stylesheets -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style data-purpose="custom-theme">
+    /* Custom accent color for Mukti Kendra theme */
+    :root {
+      --emerald-accent: #0df280;
+    }
+    
+    .text-accent {
+      color: var(--emerald-accent);
+    }
+    
+    .border-accent {
+      border-color: var(--emerald-accent);
+    }
+
+    .bg-accent {
+      background-color: var(--emerald-accent);
+    }
+
+    /* Pronounced Glassmorphism effect */
+    .glass-card {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 2rem;
+    }
+
+    /* Modern Input styling */
+    .form-input {
+      background: rgba(0, 0, 0, 0.4) !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+      transition: all 0.2s ease;
+    }
+
+    .form-input:focus {
+      border-color: var(--emerald-accent) !important;
+      background: rgba(0, 0, 0, 0.5) !important;
+      ring-color: transparent !important;
+      outline: none;
+    }
+  </style>
+<!-- END: Scripts and Stylesheets -->
+</head>
+<body class="h-screen w-full overflow-hidden font-sans antialiased text-white">
+<!-- BEGIN: Background Image Layer -->
+<div class="fixed inset-0 z-[-1] bg-cover bg-center bg-no-repeat brightness-75" data-purpose="app-background" style="background-image: url('data:image/...;base64,...');">
+<!-- Overlay to ensure text legibility -->
+<div class="absolute inset-0 bg-black/30"></div>
+</div>
+<!-- END: Background Image Layer -->
+<!-- BEGIN: Main Login Container -->
+<main class="flex h-full w-full items-center justify-center p-6">
+<!-- BEGIN: Glassmorphism Card -->
+<div class="glass-card w-full max-w-sm p-8 shadow-2xl" data-purpose="login-form-container">
+<!-- Logo/Brand Name -->
+<div class="mb-10 text-center">
+<h1 class="text-3xl font-bold tracking-tight text-white">मुट्ठी मुक्ति केंद्र</h1>
+</div>
+<form action="#" class="space-y-6" method="POST">
+<!-- Email Field -->
+<div class="text-center" data-purpose="input-group">
+<label class="sr-only" for="email">Email</label>
+<input autocomplete="email" class="form-input block w-full rounded-xl py-3.5 text-white placeholder-white/40 sm:text-sm" id="email" name="email" placeholder="Email" required="" type="email"/>
+</div>
+<!-- Password Field -->
+<div class="text-center" data-purpose="input-group">
+<label class="sr-only" for="password">Password</label>
+<input autocomplete="current-password" class="form-input block w-full rounded-xl py-3.5 text-white placeholder-white/40 sm:text-sm" id="password" name="password" placeholder="Password" required="" type="password"/>
+</div>
+<!-- Forgot Password Link -->
+<!-- Sign In Button -->
+<div class="flex justify-center">
+<button class="w-full rounded-xl bg-accent py-3.5 text-sm font-bold uppercase tracking-widest text-black transition-all duration-300 hover:brightness-110 active:scale-[0.98]" type="submit">नया मुत्तल</button>
+</div>
+<!-- Create Account Button -->
+</form>
+</div>
+<!-- END: Glassmorphism Card -->
+</main>
+<!-- END: Main Login Container -->
+</body></html>

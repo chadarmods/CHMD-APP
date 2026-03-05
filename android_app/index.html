@@ -133,7 +133,7 @@
 
                 <div class="mt-8 flex flex-col items-center gap-4">
                     <div class="w-full border-t border-white/10"></div>
-                    <button type="button" onclick="handleRegister(event)"
+                    <button type="button" onclick="navigateTo('register')"
                         class="text-white hover:text-primary transition-colors font-medium relative group z-10">
                         Create Account
                         <span
@@ -143,6 +143,52 @@
                 <p class="mt-8 text-center text-xs text-white/40">
                     Secured by high-encryption • Local Sync Only
                 </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== PAGE: REGISTER ================== -->
+    <div id="page-register" class="page relative z-10 justify-center px-6">
+        <div class="w-full max-w-md mx-auto">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-bold tracking-tight text-white mb-2 font-display">मुट्ठी मुक्ति केंद्र</h1>
+            </div>
+
+            <div class="glass-container rounded-[2rem] p-8 shadow-2xl">
+                <form id="register-form" class="space-y-6">
+                    <div class="text-center">
+                        <label class="sr-only" for="reg-username">Username</label>
+                        <input
+                            class="w-full bg-black/40 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm mb-4"
+                            id="reg-username" placeholder="Username" type="text" required />
+                    </div>
+
+                    <div class="text-center text-sm">
+                        <label class="sr-only" for="reg-password">Password</label>
+                        <input
+                            class="w-full bg-black/40 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm"
+                            id="reg-password" placeholder="Password" type="password" required />
+                    </div>
+
+                    <div class="pt-2 flex justify-center">
+                        <button
+                            class="w-full rounded-xl bg-primary py-3.5 text-sm font-bold uppercase tracking-widest text-[#064e3b] transition-all duration-300 hover:brightness-110 active:scale-[0.98]"
+                            type="submit">
+                            नया मुत्तल
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-8 flex flex-col items-center gap-4">
+                    <div class="w-full border-t border-white/10"></div>
+                    <button type="button" onclick="navigateTo('login')"
+                        class="text-white hover:text-primary transition-colors font-medium relative group z-10 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-sm">arrow_back</span>
+                        Back to Login
+                        <span
+                            class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -462,10 +508,8 @@
 
         function handleRegister(e) {
             e.preventDefault();
-            const usernameInput = prompt('Choose a Username:');
-            if (usernameInput === null) return;
-            const passwordInput = prompt('Choose a Password:');
-            if (passwordInput === null) return;
+            const usernameInput = document.getElementById('reg-username').value;
+            const passwordInput = document.getElementById('reg-password').value;
 
             const usernameInputTrimmed = usernameInput.trim();
             if (!usernameInputTrimmed || !passwordInput) {
@@ -509,6 +553,10 @@
                 logs: dummyLogs
             };
             localStorage.setItem('mukti_users', JSON.stringify(db));
+
+            // Clear inputs for the next time
+            document.getElementById('reg-username').value = '';
+            document.getElementById('reg-password').value = '';
 
             alert('Account created successfully!\nPlease sign in on the login page.');
             navigateTo('login');
@@ -716,6 +764,7 @@
 
             // Bind Forms and Buttons
             document.getElementById('login-form').onsubmit = handleLogin;
+            document.getElementById('register-form').onsubmit = handleRegister;
             document.getElementById('profile-sign-out').onclick = handleLogout;
             document.getElementById('ghee-khatam-btn').onclick = logGheeKhatam;
 
