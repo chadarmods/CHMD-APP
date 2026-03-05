@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+    <meta name="theme-color" content="#064e3b">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="icon.png">
+    <title>Mukti Kendra - PWA</title>
+
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#10b981",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#0a0a0a",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        .glass-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            min-height: 100dvh;
+        }
+
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            width: 100%;
+            min-height: 100dvh;
+            flex-direction: column;
+        }
+
+        .page.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Mobile-friendly unselectable text */
+        * {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Fix Autocomplete Background */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0 30px #064e3b inset !important;
+            -webkit-text-fill-color: white !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+    </style>
+</head>
+
+<body class="font-display bg-background-dark text-slate-100 antialiased overflow-x-hidden w-full">
+
+    <!-- Shared Background -->
+    <div class="fixed inset-0 z-0 bg-cover bg-center brightness-75 bg-[#064e3b]"
+        style="background-image: url('bg.jpg');">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-[2px]"></div>
+    </div>
+
+    <!-- ================== PAGE: LOGIN ================== -->
+    <div id="page-login" class="page active relative z-10 justify-center px-6">
+        <div class="w-full max-w-md mx-auto">
+            <div class="text-center mb-10">
+                <h1 class="text-3xl font-bold tracking-tight text-white mb-2 font-display">मुट्ठी मुक्ति केंद्र</h1>
+            </div>
+
+            <div class="glass-container rounded-[2rem] p-8 shadow-2xl">
+                <form id="login-form" class="space-y-6">
+                    <div class="text-center">
+                        <label class="sr-only" for="username">Username</label>
+                        <input
+                            class="w-full bg-black/40 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm mb-4"
+                            id="username" placeholder="Username" type="text" required />
+                    </div>
+
+                    <div class="text-center text-sm">
+                        <label class="sr-only" for="password">Password</label>
+                        <input
+                            class="w-full bg-black/40 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all text-sm"
+                            id="password" placeholder="Password" type="password" required />
+                        <div class="flex justify-center pt-3">
+                            <a class="text-xs font-medium text-white/60 hover:text-white transition-colors"
+                                href="#">Forgot password?</a>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 flex justify-center">
+                        <button
+                            class="w-full rounded-xl bg-primary py-3.5 text-sm font-bold uppercase tracking-widest text-[#064e3b] transition-all duration-300 hover:brightness-110 active:scale-[0.98]"
+                            type="submit">
+                            Sign In
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-8">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-white/10"></div>
+                        </div>
+                        <button type="button" onclick="handleRegister(event)"
+                            class="text-white hover:text-primary transition-colors font-medium relative group">
+                            Create Account
+                            <span
+                                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all group-hover:w-full"></span>
+                        </button>
+                    </div>
+                </div>
+                <p class="mt-8 text-center text-xs text-white/40">
+                    Secured by high-encryption • Local Sync Only
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================== PAGE: DASHBOARD ================== -->
+    <div id="page-dashboard" class="page relative z-10 pb-24">
+        <!-- Header -->
+        <header class="flex items-center justify-between px-6 pt-12 pb-6">
+            <div class="flex items-center gap-4">
+                <div class="relative">
+                    <img id="dashboard-avatar" alt="User Avatar"
+                        class="size-12 rounded-full border-2 border-primary object-cover"
+                        src="https://ui-avatars.com/api/?name=User&background=10b981&color=fff" />
+                    <div
+                        class="absolute bottom-0 right-0 size-3 bg-emerald-500 border-2 border-background-dark rounded-full">
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h1 class="text-sm font-medium text-slate-300">Welcome back,</h1>
+                <p id="dashboard-username" class="text-lg font-bold text-white tracking-tight">User</p>
+            </div>
+    </div>
+    <button
+        class="relative size-10 flex items-center justify-center rounded-full bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+        <span class="material-symbols-outlined text-white">notifications</span>
+        <span class="absolute top-2.5 right-2.5 size-2 bg-rose-500 rounded-full"></span>
+    </button>
+    </header>
+
+    <main class="flex-1 px-4 space-y-6 overflow-y-auto no-scrollbar pb-8">
+        <!-- Muthi Count Card -->
+        <div class="glass-container rounded-3xl p-6 relative overflow-hidden group">
+            <div
+                class="absolute -right-10 -top-10 size-40 bg-primary/20 rounded-full blur-3xl group-hover:bg-primary/30 transition-colors">
+            </div>
+            <div class="relative z-10">
+                <div class="flex items-center justify-between mb-4">
+                    <h2
+                        class="text-sm border border-primary/30 bg-primary/10 text-primary px-3 py-1 rounded-full font-semibold tracking-wide flex items-center gap-2">
+                        <span class="material-symbols-outlined text-sm">flare</span>
+                        Your Progress
+                    </h2>
+                </div>
+                <div class="flex items-end gap-3 mb-2">
+                    <span id="muthi-total-count" class="text-5xl font-black text-white tracking-tighter">0</span>
+                    <span class="text-lg text-slate-400 font-medium mb-1">Total Logs</span>
+                </div>
+                <div class="w-full bg-white/10 rounded-full h-2 mt-6">
+                    <div class="bg-gradient-to-r from-primary to-emerald-300 h-2 rounded-full" style="width: 75%">
+                    </div>
+                </div>
+                <p class="text-xs text-slate-400 mt-3 flex justify-between">
+                    <span>Current Streak</span>
+                    <span class="text-primary font-medium">Level 4</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="flex justify-center mt-6">
+            <button id="ghee-khatam-btn"
+                class="glass-container rounded-3xl flex items-center justify-center overflow-hidden shadow-2xl shadow-primary/20 w-48 h-48 relative group transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]">
+                <!-- Outer ring effect -->
+                <div
+                    class="absolute inset-0 border-4 border-transparent group-hover:border-primary/30 rounded-3xl transition-colors">
+                </div>
+
+                <div class="absolute inset-0 bg-primary/10 rounded-3xl animate-pulse group-hover:bg-primary/20">
+                </div>
+
+                <!-- We use CSS object-fit to place the raw image and border-radius to softly clip it -->
+                <img alt="Ghee Khatam Trigger"
+                    class="w-full h-full object-cover object-top opacity-90 transition-opacity group-hover:opacity-100"
+                    src="file:///C:/Users/daksh/.gemini/antigravity/brain/dd559c57-a268-40f6-bb22-c653fd369c03/e22941ed-d599-4d6d-8dc7-2804b4d75d5a.png" />
+
+                <!-- Overlay Text -->
+                <div class="absolute bottom-4 left-0 right-0 text-center">
+                    <span
+                        class="bg-black/60 text-white text-sm font-bold uppercase tracking-widest px-4 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
+                        Tap to Log
+                    </span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Weekly Chart -->
+        <div class="glass-container rounded-3xl p-6 mt-6">
+            <div class="flex items-center justify-between mb-6">
+                <h3
+                    class="text-sm border border-primary/30 bg-primary/10 text-primary px-3 py-1 rounded-full font-semibold tracking-wide">
+                    Weekly Activity</h3>
+            </div>
+
+            <div id="weekly-chart-container" class="flex items-end justify-between h-32 gap-2 relative">
+                <!-- Bars injected by JS -->
+            </div>
+        </div>
+
+        <!-- Global Leaderboard -->
+        <div>
+            <div class="flex items-center justify-between mb-4 px-2">
+                <h3 class="text-lg font-bold text-white">Top Members</h3>
+                <a class="text-xs font-semibold text-primary hover:text-emerald-400 flex items-center" href="#">View
+                    all <span class="material-symbols-outlined text-[14px] ml-1">chevron_right</span></a>
+            </div>
+            <div id="leaderboard-container" class="glass-container rounded-2xl p-2 space-y-1">
+                <!-- Leaderboard injected by JS -->
+            </div>
+        </div>
+    </main>
+    </div>
+
+    <!-- ================== PAGE: GROUPS ================== -->
+    <div id="page-groups" class="page relative z-10 pb-24">
+        <!-- Header -->
+        <header class="flex items-center px-4 py-6">
+            <button onclick="navigateTo('dashboard')"
+                class="flex items-center justify-center size-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                <span class="material-symbols-outlined text-white">arrow_back</span>
+            </button>
+            <h1 class="flex-1 text-center text-xl font-bold tracking-tight text-white pr-10">Groups</h1>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-1 px-4 space-y-6 overflow-y-auto pb-8">
+            <!-- Create Group Section -->
+            <div class="glass-container rounded-[2rem] p-6 shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-10">
+                    <span class="material-symbols-outlined text-8xl text-primary transform rotate-12">group_add</span>
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-2xl font-bold text-white mb-2 tracking-tight">Create Group</h2>
+                    <p class="text-sm text-slate-400 mb-6 leading-relaxed">Start a new community and invite friends to
+                        join your journey.</p>
+
+                    <form class="space-y-4" onsubmit="event.preventDefault(); alert('Group Created!');">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-semibold text-slate-300 uppercase tracking-widest pl-1">Group
+                                Name</label>
+                            <input type="text" placeholder="e.g. Phoenix Rising"
+                                class="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 px-4 text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+                                required />
+                        </div>
+                        <button type="submit"
+                            class="w-full h-12 bg-primary hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                            <span class="material-symbols-outlined text-sm">add_circle</span>
+                            Create Now
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="relative flex items-center py-2">
+                <div class="flex-grow border-t border-white/10"></div>
+                <span
+                    class="flex-shrink-0 mx-4 text-xs font-semibold text-slate-500 tracking-widest uppercase">OR</span>
+                <div class="flex-grow border-t border-white/10"></div>
+            </div>
+
+            <!-- Join Group Section -->
+            <div class="glass-container rounded-[2rem] p-6 shadow-xl border-t border-white/10 bg-white/[0.02]">
+                <div class="flex items-center gap-3 mb-6">
+                    <div
+                        class="size-10 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">login</span>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white tracking-tight">Join Existing</h2>
+                        <p class="text-xs text-slate-400">Enter a 6-digit invitation code</p>
+                    </div>
+                </div>
+
+                <form class="space-y-5"
+                    onsubmit="event.preventDefault(); alert('Joining Group!'); navigateTo('dashboard');">
+                    <div class="flex gap-2 justify-between">
+                        <input type="text" maxlength="1"
+                            class="w-11 h-14 bg-white/5 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                        <input type="text" maxlength="1"
+                            class="w-11 h-14 bg-white/5 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                        <input type="text" maxlength="1"
+                            class="w-11 h-14 bg-white/5 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                        <input type="text" maxlength="1"
+                            class="w-11 h-14 bg-white/5 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                        <input type="text" maxlength="1"
+                            class="w-11 h-14 bg-white/5 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                        <input type="text" maxlength="1"
+                            class="w-11 h-14 bg-white/5 border border-white/10 rounded-xl text-center text-2xl font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all" />
+                    </div>
+                    <button type="submit"
+                        class="w-full h-12 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-all border border-white/10 flex items-center justify-center gap-2">
+                        Verify & Join
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================== PAGE: PROFILE ================== -->
+    <div id="page-profile" class="page relative z-10 pb-24">
+        <!-- Header -->
+        <header class="flex items-center px-4 py-6">
+            <button onclick="navigateTo('dashboard')"
+                class="flex items-center justify-center size-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+                <span class="material-symbols-outlined text-white">arrow_back</span>
+            </button>
+            <h1 class="flex-1 text-center text-xl font-bold tracking-tight text-white pr-10">Profile</h1>
+        </header>
+
+        <!-- Main Glassmorphic Card -->
+        <main class="flex-1 flex flex-col justify-center px-6">
+            <div class="glass-container rounded-[2rem] p-8 space-y-8 shadow-2xl">
+                <!-- Profile Header Section -->
+                <div class="flex flex-col items-center">
+                    <div class="relative">
+                        <div class="size-28 rounded-full border-4 border-primary p-1 bg-white/10 overflow-hidden">
+                            <img alt="Alex Rivera Profile" class="w-full h-full object-cover rounded-full"
+                                src="https://ui-avatars.com/api/?name=Alex+Rivera&background=10b981&color=fff" />
+                        </div>
+                        <button
+                            class="absolute bottom-0 right-0 size-8 bg-primary text-white rounded-full border-2 border-background-dark flex items-center justify-center hover:scale-110 transition-transform">
+                            <span class="material-symbols-outlined text-xs">photo_camera</span>
+                        </button>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <h2 class="text-2xl font-bold text-white">Alex Rivera</h2>
+                        <p class="text-primary font-medium opacity-90">alex.rivera@example.com</p>
+                    </div>
+                </div>
+
+                <!-- Details Section -->
+                <div class="space-y-4 border-t border-white/10 pt-6">
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs font-semibold text-slate-300 uppercase tracking-widest">Status</span>
+                        <span
+                            class="bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Premium
+                            Member</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider">Active Groups</p>
+                            <p class="text-lg font-bold text-white">2</p>
+                        </div>
+                        <div class="space-y-1 text-right">
+                            <p class="text-[10px] text-slate-400 uppercase tracking-wider">Joined Date</p>
+                            <p class="text-lg font-bold text-white">Oct 2023</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="space-y-3">
+                    <button
+                        class="w-full h-12 bg-primary hover:bg-emerald-500 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2">
+                        Save Changes
+                    </button>
+                    <button id="profile-sign-out"
+                        class="w-full h-12 border border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined text-rose-400 text-sm">logout</span>
+                        Sign Out
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ================== BOTTOM NAVIGATION ================== -->
+    <div id="bottom-nav"
+        class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-sm z-50 transition-transform duration-300 transform translate-y-32">
+        <nav
+            class="glass-container flex items-center justify-between px-8 py-3 rounded-full border border-white/20 shadow-2xl backdrop-blur-xl bg-black/40">
+            <button onclick="navigateTo('dashboard')" id="nav-dashboard"
+                class="flex flex-col items-center gap-1 text-primary transition-colors nav-btn">
+                <svg class="w-6 h-6 nav-icon" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-medium tracking-wide">Home</span>
+            </button>
+            <button onclick="navigateTo('groups')" id="nav-groups"
+                class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors nav-btn">
+                <svg class="w-6 h-6 nav-icon" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z">
+                    </path>
+                </svg>
+                <span class="text-[10px] font-medium tracking-wide">Groups</span>
+            </button>
+            <button onclick="navigateTo('profile')" id="nav-profile"
+                class="flex flex-col items-center gap-1 text-slate-400 hover:text-primary transition-colors nav-btn">
+                <svg class="w-6 h-6 nav-icon" fill="currentColor" viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                        clip-rule="evenodd"></path>
+                </svg>
+                <span class="text-[10px] font-medium tracking-wide">Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <!-- ================== APP LOGIC & DATABASE ================== -->
+    <script>
+        // --- 1. LOCAL DATABASE SETUP ---
+        function initDB() {
+            if (!localStorage.getItem('mukti_users')) {
+                // Initialize empty object - we'll let users register themselves
+                localStorage.setItem('mukti_users', JSON.stringify({}));
+            }
+        }
+
+        function getCurrentUser() {
+            return localStorage.getItem('mukti_current_user');
+        }
+
+        // --- 2. AUTHENTICATION FLOW ---
+        function handleLogin(e) {
+            e.preventDefault();
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value;
+
+            const db = JSON.parse(localStorage.getItem('mukti_users')) || {};
+
+            // Case-insensitive username match
+            const userKeys = Object.keys(db);
+            const matchedUser = userKeys.find(u => u.toLowerCase() === usernameInput.toLowerCase());
+
+            if (matchedUser && db[matchedUser].password === passwordInput) {
+                localStorage.setItem('mukti_current_user', matchedUser);
+                document.getElementById('password').value = '';
+
+                // Update UI for the logged in user
+                document.getElementById('dashboard-username').textContent = matchedUser;
+                document.getElementById('dashboard-avatar').src = `https://ui-avatars.com/api/?name=${matchedUser}&background=10b981&color=fff`;
+
+                updateDashboardStats(matchedUser);
+                navigateTo('dashboard');
+            } else {
+                alert('Invalid username or password.');
+            }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const usernameInput = prompt('Choose a Username:');
+            if (usernameInput === null) return;
+            const passwordInput = prompt('Choose a Password:');
+            if (passwordInput === null) return;
+
+            const usernameInputTrimmed = usernameInput.trim();
+            if (!usernameInputTrimmed || !passwordInput) {
+                alert('Username and password cannot be empty.');
+                return;
+            }
+
+            const db = JSON.parse(localStorage.getItem('mukti_users')) || {};
+
+            // Check if username is already taken (case-insensitive)
+            const userKeys = Object.keys(db);
+            const exists = userKeys.some(u => u.toLowerCase() === usernameInputTrimmed.toLowerCase());
+
+            if (exists) {
+                alert('Username already exists! Please choose another one.');
+                return;
+            }
+
+            // Save new user
+            db[usernameInputTrimmed] = {
+                password: passwordInput,
+                logs: []
+            };
+            localStorage.setItem('mukti_users', JSON.stringify(db));
+
+            alert('Account created successfully!\nPlease sign in on the login page.');
+            navigateTo('login');
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('mukti_current_user');
+            navigateTo('login');
+        }
+
+        // --- 3. GHEE KHATAM TRACKING ---
+        function logGheeKhatam() {
+            const currentUser = getCurrentUser();
+            if (!currentUser) return;
+
+            const db = JSON.parse(localStorage.getItem('mukti_users'));
+            db[currentUser].logs.push(new Date().toISOString());
+            localStorage.setItem('mukti_users', JSON.stringify(db));
+
+            // Visual feedback
+            const btn = document.getElementById('ghee-khatam-btn');
+            btn.classList.add('scale-95', 'opacity-50');
+            setTimeout(() => btn.classList.remove('scale-95', 'opacity-50'), 200);
+
+            updateDashboardStats(currentUser);
+        }
+
+        // --- 4. DASHBOARD UPDATES ---
+        function updateDashboardStats(username) {
+            const db = JSON.parse(localStorage.getItem('mukti_users'));
+            const logs = db[username].logs.map(d => new Date(d));
+
+            // Total Muthi Count
+            document.getElementById('muthi-total-count').textContent = logs.length;
+
+            // Create the Weekly Chart
+            updateWeeklyChart(logs);
+
+            // Update Leaderboard
+            updateLeaderboard(db);
+        }
+
+        function updateWeeklyChart(logs) {
+            const chartContainer = document.getElementById('weekly-chart-container');
+            chartContainer.innerHTML = ''; // Clear existing
+
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Generate last 7 days
+            const days = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                days.push(d);
+            }
+
+            // Count logs per day
+            const dailyCounts = days.map(day => {
+                return logs.filter(log => {
+                    return log.getDate() === day.getDate() &&
+                        log.getMonth() === day.getMonth() &&
+                        log.getFullYear() === day.getFullYear();
+                }).length;
+            });
+
+            const maxCount = Math.max(...dailyCounts, 1); // Avoid div by 0
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+            // Render Bars
+            dailyCounts.forEach((count, index) => {
+                const dayDate = days[index];
+                const isToday = index === 6; // Last item is always today
+                const heightPercent = Math.max((count / maxCount) * 100, 5); // Min height 5%
+
+                const barHtml = `
+                    <div class="flex flex-col items-center justify-end h-full w-full gap-2 ${isToday ? 'relative group' : ''}">
+                        ${isToday ? '<div class="absolute -top-3 w-1.5 h-1.5 rounded-full bg-primary shadow-[0_0_8px_#10b981]"></div>' : ''}
+                        
+                        <div class="w-full ${isToday ? 'bg-primary shadow-[0_0_15px_rgba(16,185,129,0.3)]' : 'bg-primary/20 hover:bg-primary/40'} rounded-t-lg transition-all duration-500" style="height: ${heightPercent}%"></div>
+                        
+                        <span class="text-xs font-bold ${isToday ? 'text-primary drop-shadow-[0_0_8px_#10b981]' : 'text-white'}">${count}</span>
+                        <span class="text-[10px] ${isToday ? 'text-primary font-bold tracking-wider' : 'text-slate-400 font-medium'} uppercase">${dayNames[dayDate.getDay()]}</span>
+                    </div>
+                `;
+                chartContainer.insertAdjacentHTML('beforeend', barHtml);
+            });
+        }
+
+        function updateLeaderboard(db) {
+            const leaderboardContainer = document.getElementById('leaderboard-container');
+
+            // Calculate totals for all users
+            const stats = Object.keys(db).map(user => {
+                return {
+                    name: user,
+                    total: db[user].logs.length
+                };
+            }).sort((a, b) => b.total - a.total); // Sort highest to lowest
+
+            const currentUser = getCurrentUser();
+            leaderboardContainer.innerHTML = '';
+
+            stats.forEach((stat, index) => {
+                const isCurrent = stat.name === currentUser;
+                let rankColors = '';
+
+                if (index === 0) rankColors = 'text-amber-400';
+                else if (index === 1) rankColors = 'text-slate-300';
+                else if (index === 2) rankColors = 'text-amber-600';
+                else rankColors = 'text-slate-500';
+
+                const html = `
+                    <div class="flex items-center justify-between p-3 rounded-xl ${isCurrent ? 'bg-primary/5 border border-primary/20' : 'hover:bg-white/5 border border-transparent'} transition-colors">
+                        <div class="flex items-center gap-3">
+                            <span class="text-sm font-black ${rankColors} w-4">${index + 1}</span>
+                            <div class="size-8 rounded-full ${isCurrent ? 'bg-primary ring-2 ring-primary/40' : 'bg-slate-600'} flex items-center justify-center text-white font-bold text-xs">
+                                ${stat.name.charAt(0)}
+                            </div>
+                            <span class="text-sm font-semibold ${isCurrent ? 'text-white' : 'text-slate-200'}">${isCurrent ? stat.name + ' (You)' : stat.name}</span>
+                        </div>
+                        <span class="text-sm font-bold text-primary">${stat.total}</span>
+                    </div>
+                `;
+                leaderboardContainer.insertAdjacentHTML('beforeend', html);
+            });
+        }
+
+        // --- 5. INITIALIZATION & ROUTING ---
+        function navigateTo(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show target page
+            document.getElementById('page-' + pageId).classList.add('active');
+            window.scrollTo(0, 0);
+
+            // Update bottom nav
+            const bottomNav = document.getElementById('bottom-nav');
+            if (pageId === 'login') {
+                bottomNav.classList.add('translate-y-32'); // hide nav
+            } else {
+                bottomNav.classList.remove('translate-y-32'); // show nav
+
+                // Update active state in nav
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('text-primary');
+                    btn.classList.add('text-slate-400');
+                });
+
+                const activeBtn = document.getElementById('nav-' + pageId);
+                if (activeBtn) {
+                    activeBtn.classList.remove('text-slate-400');
+                    activeBtn.classList.add('text-primary');
+                }
+            }
+        }
+
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
+            });
+        }
+
+        // Initialize DB and bind events
+        document.addEventListener('DOMContentLoaded', () => {
+            initDB();
+
+            // Check auth state
+            const currentUser = getCurrentUser();
+            if (currentUser) {
+                document.getElementById('dashboard-username').textContent = currentUser;
+                document.getElementById('dashboard-avatar').src = `https://ui-avatars.com/api/?name=${currentUser}&background=10b981&color=fff`;
+                updateDashboardStats(currentUser);
+                navigateTo('dashboard');
+            } else {
+                navigateTo('login');
+            }
+
+            // Bind Forms and Buttons
+            document.getElementById('login-form').onsubmit = handleLogin;
+            document.getElementById('profile-sign-out').onclick = handleLogout;
+            document.getElementById('ghee-khatam-btn').onclick = logGheeKhatam;
+
+            // Setup join group inputs (auto-focus next input)
+            document.querySelectorAll('#page-groups input[maxlength="1"]').forEach((input, index, inputs) => {
+                input.addEventListener('input', (e) => {
+                    if (e.target.value.length === 1 && index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    }
+                });
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                        inputs[index - 1].focus();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
